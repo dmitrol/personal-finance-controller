@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
-import userService from '../services/user.js'
 import { validationResult } from 'express-validator'
+import userService from '../services/user.js'
+import profileService from '../services/profile.js'
 import ApiError from '../exceptions/api_error.js'
 
 dotenv.config()
@@ -15,9 +16,10 @@ class UserController {
         )
       }
       const { email, password } = req.body
-      const data = await userService.registration(email, password)
-      setRefreshToken(res, data.refreshToken)
-      return res.status(200).json(data)
+      const result = await userService.registration(email, password)
+      setRefreshToken(res, result.refreshToken)
+      const profile = await profileService.createProfile(result.user.id)
+      return res.status(200).json({ user: result, profile: profile })
     } catch (e) {
       next(e)
     }

@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 
 import authRouter from './routers/auth.js'
+import profileRouter from './routers/profile.js'
 import errorMiddleware from './middlewares/error_middleware.js'
 
 dotenv.config()
@@ -19,6 +20,7 @@ app.use(cookieParser())
 app.use(cors())
 
 app.use('/api', authRouter)
+app.use('/api/profile', profileRouter)
 
 app.use(errorMiddleware)
 

@@ -5,9 +5,9 @@ function errorMiddleware(error, request, response, next) {
     return response
       .status(error.status)
       .json({ message: error.message, errors: error.errors })
+  } else {
+    return response.status(500).json({ message: 'Unknown error' })
   }
-  console.log(error)
-  return response.status(500).json({ message: 'Неизвестная ошибка' })
 }
 
 export default errorMiddleware
