@@ -42,7 +42,7 @@ router.delete(
   profileController.deleteCurrency
 )
 
-// category 
+// category
 router.get('/category', authMiddleware, profileController.getAllCategories)
 router.get('/category/:id', authMiddleware, profileController.getOneCategory)
 router.post(
@@ -69,4 +69,31 @@ router.delete(
   profileController.deleteCategory
 )
 
+router.get('/bill', authMiddleware, profileController.getAllBills)
+router.get('/bill/:id', authMiddleware, profileController.getOneBill)
+router.post(
+  '/bill',
+  body('title').notEmpty().withMessage('empty title'),
+  body('currency_code')
+    .isLength({ min: 3, max: 3 })
+    .withMessage('must be 3 characters'),
+  authMiddleware,
+  profileController.addBill
+)
+router.put(
+  '/bill',
+  body('bill_id').notEmpty().withMessage('empty title'),
+  body('title').notEmpty().withMessage('empty title'),
+  body('currency_code')
+    .isLength({ min: 3, max: 3 })
+    .withMessage('must be 3 characters'),
+  authMiddleware,
+  profileController.updateBill
+)
+router.delete(
+  '/bill',
+  body('bill_id').notEmpty().withMessage('empty title'),
+  authMiddleware,
+  profileController.deleteBill
+)
 export default router

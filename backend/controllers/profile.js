@@ -113,10 +113,7 @@ class ProfileController {
         return next(ApiError.validationError(validationErrors.array()))
       }
       const code = req.body.code.toUpperCase()
-      const currency = await profileService.getCurrencyByCode(
-        req.user.id,
-        code
-      )
+      const currency = await profileService.getCurrencyByCode(req.user.id, code)
       if (!currency) {
         return next(ApiError.badRequest('Currency not found'))
       }
@@ -125,12 +122,7 @@ class ProfileController {
       }
       return res
         .status(201)
-        .json(
-          await profileService.deleteCurrency(
-            req.user.id,
-            code
-          )
-        )
+        .json(await profileService.deleteCurrency(req.user.id, code))
     } catch (e) {
       next(e)
     }
@@ -213,10 +205,70 @@ class ProfileController {
     }
   }
 
-  async reset(req, res, next) {
+  async getOneBill(req, res, next) {
     try {
-      const result = await profileService.reset(req.user.id)
-      return res.status(201).json(result)
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      return res
+        .status(200)
+        .json(await profileService.getOneBill(req.user.id, req.params.id))
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async getAllBills(req, res, next) {
+    try {
+      return res.status(200).json(await profileService.getAllBills(req.user.id))
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async addBill(req, res, next) {
+    try {
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      return res.status(200).json(
+        await profileService.addBill(req.user.id, {
+          title: req.body.title,
+          currency: req.body.currency_code,
+        })
+      )
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async updateBill(req, res, next) {
+    try {
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      const data = await profileService.updateBill(req.user.id, req.body.bill_id, {
+        title: req.body.title,
+        currency: req.body.currency_code,
+      })
+      return res.status(200).json(data)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async deleteBill(req, res, next) {
+    try {
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      return res
+        .status(200)
+        .json(await profileService.deleteBill(req.user.id, req.body.bill_id))
     } catch (e) {
       next(e)
     }

@@ -99,7 +99,7 @@ class ProfileService {
   async deleteCurrency(userId, code) {
     const response = await ProfileModel.findOneAndUpdate(
       { user: userId, 'currencies.code': code },
-      { $pull: { currencies: { code: code } } },
+      { $pull: { currencies: { code: code }, bills: { currency: code } } },
       { new: true }
     )
     if (response === null) {
@@ -171,6 +171,58 @@ class ProfileService {
     )
     if (response === null) {
       throw ApiError.badRequest('Category not found')
+    }
+    return response
+  }
+
+  async getAllBills(userId) {
+    const profile = await ProfileModel.findOne({ user: userId })
+    return profile.bills
+  }
+
+  async getOneBill(userId, billId) {
+    const profile = await ProfileModel.findOne({ user: userId })
+    const result = profile.bills.find((bill) => bill._id.equals(billId))
+    return result ? result : null
+  }
+
+  async addBill(userId, newBill) {
+    const profile = await ProfileModel.findOne({ user: userId })
+    const result = profile.bills.find((bill) => bill.title === newBill.title)
+    if (result) {
+      throw ApiError.badRequest('Bill with this title already exists', [])
+    }
+    profile.bills.push(newBill)
+    return await profile.save()
+  }
+  async updateBill(userId, billId, newBill) {
+    const profile = await ProfileModel.findOne({
+      user: userId,
+      'bills._id': billId,
+    })
+    if (!profile) {
+      throw ApiError.badRequest('Bill not found', [])
+    }
+    const response = await ProfileModel.findOneAndUpdate(
+      { user: userId, 'bills._id': billId },
+      {
+        $set: {
+          'bills.$.title': newBill.title,
+          'bills.$.cyrrency': newBill.currency,
+        },
+      },
+      { new: true }
+    )
+    return response
+  }
+  async deleteBill(userId, billId) {
+    const response = await ProfileModel.findOneAndUpdate(
+      { user: userId, 'bills._id)': billId },
+      { $pull: { bills: { _id: billId } } },
+      { new: true }
+    )
+    if (response === null) {
+      throw ApiError.badRequest('Bill not found')
     }
     return response
   }

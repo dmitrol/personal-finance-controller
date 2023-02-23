@@ -6,6 +6,8 @@ import mongoose from 'mongoose'
 
 import authRouter from './routers/auth.js'
 import profileRouter from './routers/profile.js'
+import recodRouter from './routers/record.js'
+import transferRouter from './routers/transfer.js'
 import errorMiddleware from './middlewares/error_middleware.js'
 
 dotenv.config()
@@ -21,6 +23,8 @@ app.use(cors())
 
 app.use('/api', authRouter)
 app.use('/api/profile', profileRouter)
+app.use('/api/record', recodRouter)
+app.use('/api/transfer', transferRouter)
 
 app.use(errorMiddleware)
 
