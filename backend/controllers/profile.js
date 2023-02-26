@@ -171,7 +171,7 @@ class ProfileController {
       }
       const data = await profileService.updateCategory(
         req.user.id,
-        req.body.id,
+        req.body.category_id,
         {
           title: req.body.title,
           income: req.body.income,
@@ -190,16 +190,14 @@ class ProfileController {
       if (!validationErrors.isEmpty()) {
         return next(ApiError.validationError(validationErrors.array()))
       }
-      const category = await profileService.getOneCategory(
-        req.user.id,
-        req.body.id
-      )
-      if (!category) {
-        return next(ApiError.badRequest('Category not found'))
-      }
-      return res
-        .status(201)
-        .json(await profileService.deleteCategory(req.user.id, req.body.id))
+      profileService
+        .deleteCategory(req.user.id, req.body.category_id)
+        .then(() => {
+          res.status(201).json({ status: true })
+        })
+        .catch((e) => {
+          next(e)
+        })
     } catch (e) {
       next(e)
     }
@@ -250,10 +248,14 @@ class ProfileController {
       if (!validationErrors.isEmpty()) {
         return next(ApiError.validationError(validationErrors.array()))
       }
-      const data = await profileService.updateBill(req.user.id, req.body.bill_id, {
-        title: req.body.title,
-        currency: req.body.currency_code,
-      })
+      const data = await profileService.updateBill(
+        req.user.id,
+        req.body.bill_id,
+        {
+          title: req.body.title,
+          currency: req.body.currency_code,
+        }
+      )
       return res.status(200).json(data)
     } catch (e) {
       next(e)
@@ -266,9 +268,14 @@ class ProfileController {
       if (!validationErrors.isEmpty()) {
         return next(ApiError.validationError(validationErrors.array()))
       }
-      return res
-        .status(200)
-        .json(await profileService.deleteBill(req.user.id, req.body.bill_id))
+      profileService
+        .deleteBill(req.user.id, req.body.bill_id)
+        .then(() => {
+          res.status(201).json({ status: true })
+        })
+        .catch((e) => {
+          next(e)
+        })
     } catch (e) {
       next(e)
     }

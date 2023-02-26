@@ -17,6 +17,15 @@ class RecordDto {
     this.created_at = model.created_at
     this.description = model.description
   }
+
+  static resolveRecord(recod) {
+    return new RecordDto(recod)
+  }
+  static resolveRecordList(recordList) {
+    return recordList.map((record) => {
+      return this.resolveRecord(record)
+    })
+  }
 }
 
 export { RecordDto as default }

@@ -1,5 +1,10 @@
 import ProfileModel from '../models/profile.js'
+import RecordModel from '../models/recod.js'
 import ApiError from '../exceptions/api_error.js'
+import ProfileDto from '../dtos/profile_dto.js'
+import CurrencyDto from '../dtos/currency_dto.js'
+import CategoryDto from '../dtos/category_dto.js'
+import BillDto from '../dtos/bill_dto.js'
 
 class ProfileService {
   async createProfile(userId) {
@@ -10,12 +15,13 @@ class ProfileService {
     })
   }
   async getProfile(userId) {
-    return await ProfileModel.findOne({ user: userId })
+    const profile = await ProfileModel.findOne({ user: userId }).lean()
+    return ProfileDto.resolveProfile(profile)
   }
 
   async getAllCurrency(userId) {
-    const profile = await ProfileModel.findOne({ user: userId })
-    return profile.currencies
+    const profile = await ProfileModel.findOne({ user: userId }).lean()
+    return CurrencyDto.resolveCurrencyList(profile.currencies)
   }
 
   async getCurrencyByCode(userId, code) {
@@ -23,7 +29,7 @@ class ProfileService {
       user: userId,
     })
     const result = profile.currencies.find((currency) => currency.code === code)
-    return result ? result : null
+    return result ? CurrencyDto.resolveCurrency(result) : null
   }
 
   async getMainCurrency(userId) {
@@ -31,7 +37,7 @@ class ProfileService {
     const mainCurrency = profile.currencies.find(
       (currency) => currency.main === true
     )
-    return mainCurrency ? mainCurrency : null
+    return mainCurrency ? CurrencyDto.resolveCurrency(mainCurrency) : null
   }
 
   async addCurrency(userId, currency) {
@@ -61,11 +67,12 @@ class ProfileService {
     }
     profile.currencies.push(currency)
 
-    return await profile.save()
+    await profile.save()
+    return CurrencyDto.resolveCurrencyList(profile.currencies)
   }
 
   async updateCurrency(userId, code, newCurrency) {
-    const response = await ProfileModel.findOneAndUpdate(
+    const profile = await ProfileModel.findOneAndUpdate(
       { user: userId, 'currencies.code': code },
       {
         $set: {
@@ -75,10 +82,10 @@ class ProfileService {
       },
       { new: true }
     )
-    if (response === null) {
+    if (profile === null) {
       throw ApiError.badRequest('Currency not found')
     }
-    return response
+    return CurrencyDto.resolveCurrencyList(profile.currencies)
   }
 
   async updateMainCurrency(userId, code, newCurrency) {
@@ -93,19 +100,29 @@ class ProfileService {
         item.rate = +(item.rate / newCurrency.rate).toFixed(4)
       }
     })
-    return await profile.save()
+    await profile.save()
+    return CurrencyDto.resolveCurrencyList(profile.currencies)
   }
 
   async deleteCurrency(userId, code) {
-    const response = await ProfileModel.findOneAndUpdate(
+    const hasBills = await ProfileModel.find({
+      user: userId,
+      'bills.currency': code,
+    })
+    if (hasBills.length > 0) {
+      throw ApiError.badRequest(
+        'This currency used with bill, delete bill at first'
+      )
+    }
+    const profile = await ProfileModel.findOneAndUpdate(
       { user: userId, 'currencies.code': code },
       { $pull: { currencies: { code: code }, bills: { currency: code } } },
       { new: true }
     )
-    if (response === null) {
+    if (profile === null) {
       throw ApiError.badRequest('Currency not found')
     }
-    return response
+    return CurrencyDto.resolveCurrencyList(profile.currencies)
   }
 
   async getOneCategory(userId, categoryId) {
@@ -115,12 +132,12 @@ class ProfileService {
     const result = profile.categories.find((category) =>
       category._id.equals(categoryId)
     )
-    return result ? result : null
+    return result ? CategoryDto.resolveCategory(result) : null
   }
 
   async getAllCategory(userId) {
     const profile = await ProfileModel.findOne({ user: userId })
-    return profile.categories
+    return CategoryDto.resolveCategoryList(profile.categories)
   }
 
   async addCategory(userId, newCategory) {
@@ -132,25 +149,26 @@ class ProfileService {
       throw ApiError.badRequest('Category with this title already exists', [])
     }
     profile.categories.push(newCategory)
-    return await profile.save()
+    await profile.save()
+    return CategoryDto.resolveCategoryList(profile.categories)
   }
 
   async updateCategory(userId, categoryId, newCategory) {
-    const profile = await ProfileModel.findOne({
+    const hasCategory = await ProfileModel.findOne({
       user: userId,
       'categories._id': categoryId,
     })
-    if (!profile) {
+    if (!hasCategory) {
       throw ApiError.badRequest('Category not found', [])
     }
-    const hasThisName = profile.categories.find(
+    const hasThisName = hasCategory.categories.find(
       (category) =>
         !category._id.equals(categoryId) && category.title === newCategory.title
     )
     if (hasThisName) {
       throw ApiError.badRequest('Category with this title already exists', [])
     }
-    const response = await ProfileModel.findOneAndUpdate(
+    const profile = await ProfileModel.findOneAndUpdate(
       { user: userId, 'categories._id': categoryId },
       {
         $set: {
@@ -161,49 +179,58 @@ class ProfileService {
       },
       { new: true }
     )
-    return response
+    return CategoryDto.resolveCategoryList(profile.categories)
   }
   async deleteCategory(userId, categoryId) {
-    const response = await ProfileModel.findOneAndUpdate(
-      { user: userId, 'categories._id)': categoryId },
-      { $pull: { categories: { _id: categoryId } } },
-      { new: true }
-    )
-    if (response === null) {
+    const hasCategory = await ProfileModel.findOne({
+      user: userId,
+      'categories._id': categoryId,
+    })
+    if (!hasCategory) {
       throw ApiError.badRequest('Category not found')
     }
-    return response
+    return Promise.all([
+      RecordModel.deleteMany({ profile: hasCategory._id, category: categoryId }),
+      ProfileModel.findOneAndUpdate(
+        { user: userId, 'categories._id': categoryId },
+        { $pull: { categories: { _id: categoryId } } },
+        { new: true }
+      ),
+    ])
   }
 
   async getAllBills(userId) {
     const profile = await ProfileModel.findOne({ user: userId })
-    return profile.bills
+    return BillDto.resolveBillList(profile.bills)
   }
 
   async getOneBill(userId, billId) {
     const profile = await ProfileModel.findOne({ user: userId })
     const result = profile.bills.find((bill) => bill._id.equals(billId))
-    return result ? result : null
+    return result ? BillDto.resolveBill(result) : null
   }
 
   async addBill(userId, newBill) {
     const profile = await ProfileModel.findOne({ user: userId })
-    const result = profile.bills.find((bill) => bill.title === newBill.title)
-    if (result) {
+    const hasBillTitle = profile.bills.find(
+      (bill) => bill.title === newBill.title
+    )
+    if (hasBillTitle) {
       throw ApiError.badRequest('Bill with this title already exists', [])
     }
     profile.bills.push(newBill)
-    return await profile.save()
+    await profile.save()
+    return BillDto.resolveBillList(profile.bills)
   }
   async updateBill(userId, billId, newBill) {
-    const profile = await ProfileModel.findOne({
+    const hasBill = await ProfileModel.findOne({
       user: userId,
       'bills._id': billId,
     })
-    if (!profile) {
+    if (!hasBill) {
       throw ApiError.badRequest('Bill not found', [])
     }
-    const response = await ProfileModel.findOneAndUpdate(
+    const profile = await ProfileModel.findOneAndUpdate(
       { user: userId, 'bills._id': billId },
       {
         $set: {
@@ -213,18 +240,27 @@ class ProfileService {
       },
       { new: true }
     )
-    return response
+    return BillDto.resolveBillList(profile.bills)
   }
   async deleteBill(userId, billId) {
-    const response = await ProfileModel.findOneAndUpdate(
-      { user: userId, 'bills._id)': billId },
-      { $pull: { bills: { _id: billId } } },
-      { new: true }
-    )
-    if (response === null) {
+    const hasBill = await ProfileModel.findOne({
+      user: userId,
+      'bills._id': billId,
+    })
+    if (!hasBill) {
       throw ApiError.badRequest('Bill not found')
     }
-    return response
+    return Promise.all([
+      RecordModel.deleteMany({ profile: hasBill._id, bill: billId }),
+      ProfileModel.findOneAndUpdate(
+        {
+          user: userId,
+          'bills._id': billId,
+        },
+        { $pull: { bills: { _id: billId } } },
+        { new: true }
+      ),
+    ])
   }
 }
 

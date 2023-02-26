@@ -2,13 +2,11 @@ import { validationResult } from 'express-validator'
 import ApiError from '../exceptions/api_error.js'
 import profileService from '../services/profile.js'
 import recordSevice from '../services/record.js'
-import RecordDto from '../dtos/record_dto.js'
 
 class RecordController {
   async getAllRecords(req, res, next) {
     try {
-      const data = await recordSevice.getAllRecords(req.user.id)
-      return res.status(200).json(data)
+      return res.status(200).json(await recordSevice.getAllRecords(req.user.id))
     } catch (e) {
       next(e)
     }
@@ -42,9 +40,12 @@ class RecordController {
         userId,
         req.body.category_id
       )
+      if (!category) {
+        throw ApiError.badRequest('Category not found')
+      }
       const data = await recordSevice.addRecord(userId, {
-        bill: bill,
-        category: category,
+        bill: bill.id,
+        category: category.id,
         sum: req.body.sum,
         type: req.body.type,
         created_at: req.body.created_at || Date.now(),
@@ -82,11 +83,14 @@ class RecordController {
       if (!validationErrors.isEmpty()) {
         return next(ApiError.validationError(validationErrors.array()))
       }
-      const data = await recordSevice.deleteRecord(
-        req.user.id,
-        req.body.record_id
-      )
-      return res.status(201).json(data)
+      recordSevice
+        .deleteRecord(req.user.id, req.body.record_id)
+        .then(() => {
+          res.status(201).json({ status: true })
+        })
+        .catch((err) => {
+          next(err)
+        })
     } catch (e) {
       next(e)
     }

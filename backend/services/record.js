@@ -1,8 +1,6 @@
 import RecordModel from '../models/recod.js'
 import ProfileModel from '../models/profile.js'
 import RecordDto from '../dtos/record_dto.js'
-import BillDto from '../dtos/bill_dto.js'
-import CategoryDto from '../dtos/category_dto.js'
 import profileService from '../services/profile.js'
 import ApiError from '../exceptions/api_error.js'
 import transferService from '../services/transfer.js'
@@ -10,16 +8,16 @@ import transferService from '../services/transfer.js'
 class RecordService {
   async getAllRecords(userId) {
     const profile = await ProfileModel.findOne({ user: userId })
-    const recods = await RecordModel.find({ profile: profile.id }).lean()
-    const promises = recods.map(async (record) => {
+    const records = await RecordModel.find({ profile: profile.id }).lean()
+    const promises = records.map(async (record) => {
       const bill = await profileService.getOneBill(userId, record.bill)
       const category = await profileService.getOneCategory(
         userId,
         record.category
       )
-      record.bill = new BillDto(bill)
-      record.category = new CategoryDto(category)
-      return new RecordDto(record)
+      record.bill = bill
+      record.category = category
+      return RecordDto.resolveRecord(record)
     })
     return await Promise.all(promises)
   }
@@ -44,7 +42,7 @@ class RecordService {
       created_at: record.created_at,
       description: record.description,
     })
-    return data
+    return await this.getFullRecod(userId, data)
   }
 
   async updateRecord(userId, recordId, record) {
@@ -88,9 +86,9 @@ class RecordService {
       userId,
       record.category
     )
-    record.bill = new BillDto(bill)
-    record.category = new CategoryDto(category)
-    return new RecordDto(record)
+    record.bill = bill
+    record.category = category
+    return RecordDto.resolveRecord(record)
   }
 }
 

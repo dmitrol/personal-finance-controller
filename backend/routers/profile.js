@@ -55,7 +55,7 @@ router.post(
 )
 router.put(
   '/category',
-  body('id').notEmpty().withMessage('not param'),
+  body('category_id').notEmpty().withMessage('not param'),
   body('title').notEmpty().withMessage('empty title'),
   body('income').isBoolean().withMessage('must be boolean'),
   body('expense').isBoolean().withMessage('must be boolean'),
@@ -64,7 +64,7 @@ router.put(
 )
 router.delete(
   '/category',
-  body('id').notEmpty().withMessage('not param'),
+  body('category_id').notEmpty().withMessage('not param'),
   authMiddleware,
   profileController.deleteCategory
 )
