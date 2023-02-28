@@ -1,0 +1,8 @@
+/node_modules/**
+/dist/**
+/public/**
+README.md
+babel.config.js
+jsconfig.json
+.eslintrc.json
+vue.config.js
