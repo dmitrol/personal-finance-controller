@@ -1,0 +1,29 @@
+.fc-form {
+  padding: 20px 25px;
+  background: var(--modal-background);
+  max-width: 300px;
+  height: fit-content;
+  border-radius: 10px;
+  border: 3px solid var(--modal-border);
+}
+.fc-form__title {
+  margin-bottom: 16px;
+  font-size: 24px;
+  color: var(--modal-title);
+  font-weight: 600;
+  text-decoration: uppercase;
+  text-align: center;
+}
+.fc-form .auth-submit  {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.fc-form .va-input-wrapper {
+  padding-bottom: 22px;
+}
+.fc-form .va-input-wrapper.va-input-wrapper--error {
+  padding-bottom: 4px;
+  --va-input-wrapper-background: var(--input-error-background);
+  --va-input-wrapper-background-opacity: 1;
+}

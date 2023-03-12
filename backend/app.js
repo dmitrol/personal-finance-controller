@@ -19,7 +19,15 @@ const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors())
+
+app.use(cors({
+  'allowedHeaders': ['sessionId', 'Content-Type', 'Authorization', 'authorization'],
+  'exposedHeaders': ['sessionId'],
+  'origin': ['http://localhost:8080', 'http://localhost:8080/login'],
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'credentials': true,
+  'preflightContinue': false
+}));
 
 app.use('/api', authRouter)
 app.use('/api/profile', profileRouter)
