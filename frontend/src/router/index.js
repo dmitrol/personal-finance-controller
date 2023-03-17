@@ -1,13 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { authRoutes, markAsAuth } from './auth-routes'
 import store from '@/store'
+
+markAsAuth(authRoutes)
 
 const routes = [
   {
     path: '/',
     name: 'main',
     component: () =>
-      import(/* webpackChunkName: "MainWrapper" */ '@/views/AuthWrapper'),
+      import(/* webpackChunkName: "MainWrapper" */ '@/views/AppMain'),
     meta: { requireAuth: true },
+    children: authRoutes
   },
   {
     path: '/registration',

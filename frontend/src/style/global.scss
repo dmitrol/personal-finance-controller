@@ -1,3 +1,14 @@
+.fc-flex-right {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.fc-flex-left {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .auth-page {
   width: 100%;
   height: 100vh;

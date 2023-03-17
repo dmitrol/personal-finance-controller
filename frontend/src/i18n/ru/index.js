@@ -1,3 +1,4 @@
 import global from './global'
+import date from './date'
 
-export default { global }
+export default { global, date }

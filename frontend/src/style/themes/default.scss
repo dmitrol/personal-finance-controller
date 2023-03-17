@@ -1,7 +1,15 @@
 html[data-theme='default'] {
+  --text: #232323;
+  --text-invert: #f5f8f5;
   --auth-background: #282828;
   --modal-border: #2cff1f;
+  --modal-border: var(--va-primary);
   --modal-background: #888888;
   --modal-title: var(--va-primary);
   --input-error-background: #ffb8b8;
+  --header-background: var(--va-primary);
+  --aside-menu-bg: #ecf0f1;
+  --aside-menu-item-active: rgba(21, 78, 193, 0.3);
+  --aside-menu-item-hover: rgba(21, 78, 193, 0.15);
+  --main-content-height: calc(100vh - 58px);
 }
