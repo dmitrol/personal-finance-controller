@@ -15,6 +15,7 @@
               color="primary"
               vertical
             >
+              <app-loader :isLoading="loader" />
               <router-view />
             </va-scroll-container>
           </div>
@@ -28,6 +29,16 @@
 <script setup>
 import AppHeader from '@/components/AppHeader.vue'
 import AppNavigationMenu from '@/components/AppNavigationMenu.vue'
+import AppLoader from '@/components/AppLoader.vue'
+
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+
+const loader = computed(() => {
+  return store.state.global.loader
+})
 </script>
 
 <style lang="scss" scoped>
@@ -41,6 +52,7 @@ import AppNavigationMenu from '@/components/AppNavigationMenu.vue'
   .general-content {
     width: 100%;
     min-height: var(--main-content-height);
+    position: relative;
   }
 }
 </style>
