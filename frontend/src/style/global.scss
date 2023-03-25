@@ -1,11 +1,52 @@
+.fc-ml-1 {
+  margin-left: 8px;
+}
+.fc-ml-2 {
+  margin-left: 12px;
+}
+.fc-ml-3 {
+  margin-left: 16px;
+}
+.fc-ml-4 {
+  margin-left: 24px;
+}
+
+.fc-mr-1 {
+  margin-right: 8px;
+}
+.fc-mr-2 {
+  margin-right: 12px;
+}
+.fc-mr-3 {
+  margin-right: 16px;
+}
+.fc-mr-4 {
+  margin-right: 24px;
+}
+
+.fc-flex {
+  display: flex;
+}
+
+.fc-flex-left {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .fc-flex-right {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
-.fc-flex-left {
+.fc-flex-center {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+}
+.fc-flex-space-between {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -20,4 +61,36 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.va-modal.fc-confirmodal {
+  .va-modal__dialog {
+    border-radius: 10px;
+  }
+}
+.fc-modal {
+  .va-modal__inner {
+    padding: 0;
+  }
+  .va-modal__dialog {
+    border-radius: 10px;
+  }
+}
+
+.app-page {
+  padding: 8px 0 24px;
+  &__header {
+    padding: 16px 24px;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--main-header-text);
+  }
+  &__list {
+    margin-top: 12px;
+    padding: 0 24px;
+  }
+  &__pagination {
+    margin-top: 24px;
+    padding: 0 24px;
+  }
 }

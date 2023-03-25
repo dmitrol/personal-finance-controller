@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { body, param } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import authMiddleware from '../middlewares/auth_middleware.js'
 import profileController from '../controllers/profile.js'
 const router = new Router()
@@ -7,7 +7,19 @@ const router = new Router()
 router.get('/', authMiddleware, profileController.getProfile)
 
 // currency
-router.get('/currency', authMiddleware, profileController.getAllCurrency)
+router.get(
+  '/currency',
+  query('page')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('number not less then 1'),
+  query('per_page')
+    .optional()
+    .isInt({ min: 4 })
+    .withMessage('number not less then 4'),
+  authMiddleware,
+  profileController.getCurrency
+)
 router.get(
   '/currency/:code',
   param('code').isLength({ min: 3, max: 3 }),

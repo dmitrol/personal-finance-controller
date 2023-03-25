@@ -12,13 +12,13 @@
         type="email"
         :label="t('global.email')"
         ref="input"
-        :rules="emailValidator"
+        :rules="validators.emailValidator"
       />
       <va-input
         v-model="password"
         type="password"
         :label="t('global.password')"
-        :rules="passwordValidator"
+        :rules="validators.passwordValidator"
       />
       <div class="auth-submit">
         <va-button type="submit" @click.prevent="handleForm">
@@ -35,11 +35,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vuestic-ui'
 import { useI18n } from 'vue-i18n'
+import validators from '@/service/validators'
 
 const store = useStore()
 const router = useRouter()
@@ -50,23 +51,6 @@ const email = ref('')
 const password = ref('')
 const validation = ref(null)
 const form = ref(null)
-
-const emailValidator = computed(() => {
-  return [
-    (value) =>
-      /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(
-        value
-      ) || t('global.email_input_error'),
-  ]
-})
-const passwordValidator = computed(() => {
-  return [
-    (value) =>
-      value.length > 3 || t('global.password_min_length', { value: 4 }),
-    (value) =>
-      value.length < 30 || t('global.password_max_length', { value: 30 }),
-  ]
-})
 
 function handleForm() {
   form.value.validate()

@@ -22,6 +22,11 @@
 .fc-form .va-input-wrapper {
   padding-bottom: 22px;
 }
+.fc-form .fc-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 22px;
+}
 .fc-form .va-input-wrapper.va-input-wrapper--error {
   padding-bottom: 4px;
   --va-input-wrapper-background: var(--input-error-background);

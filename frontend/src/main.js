@@ -13,6 +13,9 @@ import {
   VaForm,
   VaInput,
   VaScrollContainer,
+  VaModal,
+  VaCheckbox,
+  VaPagination,
 } from 'vuestic-ui'
 import 'vuestic-ui/styles/essential.css'
 import 'vuestic-ui/styles/reset.css'
@@ -25,7 +28,16 @@ app
   .use(router)
   .use(
     createVuesticEssential({
-      components: { VaButton, VaToast, VaForm, VaInput, VaScrollContainer },
+      components: {
+        VaButton,
+        VaToast,
+        VaForm,
+        VaInput,
+        VaScrollContainer,
+        VaModal,
+        VaCheckbox,
+        VaPagination,
+      },
     })
   )
   .use(i18n)

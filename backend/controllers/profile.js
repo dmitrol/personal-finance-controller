@@ -21,16 +21,22 @@ class ProfileController {
       const code = req.params.code.toUpperCase()
       return res
         .status(200)
-        .json(await profileService.getCurrencyByCode(req.user.id, code))
+        .json(await profileService.getCurrencyByCode(req.user.id, code, page, perPage))
     } catch (e) {
       next(e)
     }
   }
-  async getAllCurrency(req, res, next) {
+  async getCurrency(req, res, next) {
     try {
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      const page = req.query.page || 1
+      const perPage = req.query.per_page || 10
       return res
         .status(200)
-        .json(await profileService.getAllCurrency(req.user.id))
+        .json(await profileService.getCurrency(req.user.id, page, perPage))
     } catch (e) {
       next(e)
     }
@@ -112,6 +118,7 @@ class ProfileController {
       if (!validationErrors.isEmpty()) {
         return next(ApiError.validationError(validationErrors.array()))
       }
+      
       const code = req.body.code.toUpperCase()
       const currency = await profileService.getCurrencyByCode(req.user.id, code)
       if (!currency) {

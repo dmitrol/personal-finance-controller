@@ -1,0 +1,28 @@
+.fc-table {
+  width: auto;
+  box-shadow: 0 1px 3px var(--table-shadow);
+  display: table;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.row {
+  display: table-row;
+  background: var(--table-row-first);
+  &:nth-of-type(odd) {
+    background: var(--table-row-second);
+  }
+  &.header {
+    font-weight: 900;
+    color: var(--text-invert);
+    background: var(--table-header-bg);
+  }
+}
+
+.cell {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 16px;
+  height: auto;
+  padding: 6px 12px;
+}

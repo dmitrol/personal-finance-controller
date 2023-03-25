@@ -5,6 +5,7 @@ import ProfileDto from '../dtos/profile_dto.js'
 import CurrencyDto from '../dtos/currency_dto.js'
 import CategoryDto from '../dtos/category_dto.js'
 import BillDto from '../dtos/bill_dto.js'
+import collectionHandler from '../helpers/collection-handler.js'
 
 class ProfileService {
   async createProfile(userId) {
@@ -19,9 +20,17 @@ class ProfileService {
     return ProfileDto.resolveProfile(profile)
   }
 
-  async getAllCurrency(userId) {
+  async getCurrency(userId, page, perPage) {
     const profile = await ProfileModel.findOne({ user: userId }).lean()
-    return CurrencyDto.resolveCurrencyList(profile.currencies)
+    const res = collectionHandler.resolveCollectionByPage(
+      profile.currencies || [],
+      page,
+      perPage
+    )
+    return {
+      data: CurrencyDto.resolveCurrencyList(res?.data),
+      total: res?.size,
+    }
   }
 
   async getCurrencyByCode(userId, code) {
@@ -45,7 +54,7 @@ class ProfileService {
     let hasCurrencyCode = false
     let hasBasicCurrency = false
     profile.currencies.forEach((item) => {
-      if (item.code === currency.code) {
+      if (item.code === currency.code.toUpperCase()) {
         hasCurrencyCode = true
       }
       if (item.main === true) {
@@ -190,7 +199,10 @@ class ProfileService {
       throw ApiError.badRequest('Category not found')
     }
     return Promise.all([
-      RecordModel.deleteMany({ profile: hasCategory._id, category: categoryId }),
+      RecordModel.deleteMany({
+        profile: hasCategory._id,
+        category: categoryId,
+      }),
       ProfileModel.findOneAndUpdate(
         { user: userId, 'categories._id': categoryId },
         { $pull: { categories: { _id: categoryId } } },
