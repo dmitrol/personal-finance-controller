@@ -1,42 +1,47 @@
 <template>
   <div>
     <div>
-      <div class="fc-table">
-        <div class="row header">
-          <div class="cell">{{ t('currency.table_head.title') }}</div>
-          <div class="cell">{{ t('currency.table_head.code') }}</div>
-          <div class="cell">{{ t('currency.table_head.rate') }}</div>
-          <div class="cell">{{ t('currency.table_head.main') }}</div>
-          <div class="cell fc-flex-center">
-            {{ t('currency.table_head.action') }}
+      <va-scroll-container
+        color="primary"
+        horizontal
+      >
+        <div class="fc-table">
+          <div class="row header">
+            <div class="cell">{{ t('currency.table_head.title') }}</div>
+            <div class="cell">{{ t('currency.table_head.code') }}</div>
+            <div class="cell">{{ t('currency.table_head.rate') }}</div>
+            <div class="cell">{{ t('currency.table_head.main') }}</div>
+            <div class="cell fc-flex-center">
+              {{ t('currency.table_head.action') }}
+            </div>
           </div>
-        </div>
 
-        <div class="row" v-for="currency in props.list" :key="currency.id">
-          <div class="cell">
-            {{ currency.title }}
-          </div>
-          <div class="cell">{{ currency.code }}</div>
-          <div class="cell">{{ currency.rate }}</div>
-          <div class="cell">{{ currency.main }}</div>
-          <div class="cell">
-            <div class="cell-inner">
-              <va-button
-                preset="plain"
-                icon="edit"
-                :title="t('global.edit_button')"
-                @click="openEditModal(currency)"
-              />
-              <va-button
-                preset="plain"
-                icon="delete"
-                :title="t('global.delete_button')"
-                @click="openConfirmModal(currency)"
-              />
+          <div class="row" v-for="currency in props.list" :key="currency.id">
+            <div class="cell">
+              {{ currency.title }}
+            </div>
+            <div class="cell">{{ currency.code }}</div>
+            <div class="cell">{{ currency.rate }}</div>
+            <div class="cell">{{ currency.main }}</div>
+            <div class="cell cell-action">
+              <div class="cell-inner">
+                <va-button
+                  preset="plain"
+                  icon="edit"
+                  :title="t('global.edit_button')"
+                  @click="openEditModal(currency)"
+                />
+                <va-button
+                  preset="plain"
+                  icon="delete"
+                  :title="t('global.delete_button')"
+                  @click="openConfirmModal(currency)"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </va-scroll-container>
     </div>
 
     <edit-currency-form

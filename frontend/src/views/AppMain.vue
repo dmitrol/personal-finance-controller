@@ -8,7 +8,7 @@
     <div class="application-main-wrapper">
       <div class="container">
         <div class="application-main">
-          <app-navigation-menu />
+          <div class="desktop-aside"><app-navigation-menu /></div>
           <div class="general-content">
             <va-scroll-container
               style="max-height: var(--main-content-height)"
@@ -35,7 +35,6 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
-
 const loader = computed(() => {
   return store.state.global.loader
 })
@@ -48,7 +47,13 @@ const loader = computed(() => {
   margin: 0 auto;
 }
 .application-main {
+  position: relative;
   display: flex;
+  .desktop-aside {
+    @media screen and (max-width: 720px) {
+      display: none;
+    }
+  }
   .general-content {
     width: 100%;
     min-height: var(--main-content-height);

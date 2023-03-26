@@ -1,5 +1,10 @@
 <template>
-  <va-modal class="fc-modal" :model-value="props.show" size="small">
+  <va-modal
+    class="fc-modal"
+    :mobile-fullscreen="false"
+    :model-value="props.show"
+    size="small"
+  >
     <template #content="{ cancel }">
       <va-form
         class="fc-form"

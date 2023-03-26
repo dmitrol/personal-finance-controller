@@ -16,6 +16,7 @@ import {
   VaModal,
   VaCheckbox,
   VaPagination,
+  VaSidebar,
 } from 'vuestic-ui'
 import 'vuestic-ui/styles/essential.css'
 import 'vuestic-ui/styles/reset.css'
@@ -37,6 +38,7 @@ app
         VaModal,
         VaCheckbox,
         VaPagination,
+        VaSidebar,
       },
     })
   )

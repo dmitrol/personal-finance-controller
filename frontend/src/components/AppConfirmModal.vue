@@ -1,5 +1,5 @@
 <template>
-  <va-modal :model-value="props.show" size="small">
+  <va-modal :mobile-fullscreen="false" :model-value="props.show" size="small">
     <template #content="{ ok, cancel }">
       <div class="confirm-text">{{ props.message }}</div>
       <div class="confirm-buttons">
