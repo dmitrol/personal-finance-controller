@@ -1,5 +1,5 @@
 .fc-form {
-  padding: 20px 25px;
+  padding: 20px 25px 35px;
   background: var(--modal-background);
   max-width: 300px;
   height: fit-content;
@@ -14,13 +14,16 @@
   text-decoration: uppercase;
   text-align: center;
 }
-.fc-form .auth-submit  {
+.fc-form .auth-submit {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 .fc-form .va-input-wrapper {
   padding-bottom: 22px;
+}
+.fc-form .va-select {
+  padding-bottom: 18px;
 }
 .fc-form .fc-checkbox-group {
   display: flex;

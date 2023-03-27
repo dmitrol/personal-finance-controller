@@ -14,29 +14,23 @@
         @validation="validation = $event"
       >
         <div class="fc-form__title">
-          {{ $t('currency.edit_form_title') }}
+          {{ $t('category.edit_modal_title') }}
         </div>
         <va-input
           v-model="title"
           type="text"
-          :label="t('currency.modal_title')"
+          :label="t('category.modal_title')"
           ref="input"
           :rules="validators.emptyValueValidator"
         />
-        <va-input
-          v-model="rate"
-          type="text"
-          :label="t('currency.modal_rate', { main: mainCurrency.code })"
-          ref="input"
+        <va-select
+          v-model="selectValue"
+          :label="t('category.modal_type')"
+          :options="selectOptions"
+          :rules="validators.emptyValueValidator"
         />
-        <div class="fc-checkbox-group">
-          <va-checkbox
-            v-model="main"
-            :label="t('currency.modal_main')"
-          ></va-checkbox>
-        </div>
 
-        <div class="confirm-buttons">
+        <div class="fc-flex-center">
           <va-button
             class="fc-mr-1"
             color="primary"
@@ -55,14 +49,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  computed,
-  onMounted,
-  onUpdated,
-  defineProps,
-  defineEmits,
-} from 'vue'
+import { ref, onMounted, onUpdated, defineProps, defineEmits } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import notification from '@/service/notification'
@@ -76,57 +63,68 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  currency: {
+  category: {
     type: Object,
     required: true,
   },
 })
 
 const title = ref('')
-const code = ref('')
-const rate = ref(1)
-const main = ref(false)
+const selectValue = ref('')
+const selectOptions = ref([
+  t('category.type.income'),
+  t('category.type.expense'),
+  t('category.type.universal'),
+])
 const form = ref(null)
 const validation = ref(null)
 const buttonLoading = ref(false)
 
-const mainCurrency = computed(() => {
-  return store.state.profile.mainCurrency
-})
-
 onMounted(() => {
-  title.value = props.currency.title
-  code.value = props.currency.code
-  rate.value = props.currency.rate
-  main.value = props.currency.main
+  initData()
 })
 
 onUpdated(() => {
-  title.value = props.currency.title
-  code.value = props.currency.code
-  rate.value = props.currency.rate
-  main.value = props.currency.main
+  initData()
 })
 
 function handleForm() {
   form.value.validate()
-  buttonLoading.value = true
-  const newCurrency = {
-    title: title.value,
-    code: code.value,
-    rate: rate.value,
-    main: main.value,
-  }
   if (validation.value) {
+    buttonLoading.value = true
+    const newCategory = {
+      category_id: props.category.id,
+      title: title.value,
+      income: false,
+      expense: false,
+    }
+    if (selectValue.value === t('category.type.universal')) {
+      newCategory.income = true
+      newCategory.expense = true
+    } else if (selectValue.value === t('category.type.income')) {
+      newCategory.income = true
+    } else {
+      newCategory.expense = true
+    }
     store
-      .dispatch('currency/updateCurrency', newCurrency)
+      .dispatch('category/updateCategory', newCategory)
       .then(() => {
         emit('ok')
-        notification.success(t('currency.update_success'))
+        notification.success(t('category.update_success'))
       })
       .finally(() => {
         buttonLoading.value = false
       })
+  }
+}
+function initData() {
+  title.value = props.category.title
+  if (props.category.income && props.category.expense) {
+    selectValue.value = t('category.type.universal')
+  } else if (props.category.income) {
+    selectValue.value = t('category.type.income')
+  } else {
+    selectValue.value = t('category.type.expense')
   }
 }
 </script>

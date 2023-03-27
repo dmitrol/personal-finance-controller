@@ -10,7 +10,6 @@ export default {
     code: 'Код',
     rate: 'Ставка',
     main: 'Главная',
-    action: 'Действия',
   },
   edit_form_title: 'Изменить валюту',
   create_success: 'Валюта была успешно добавлена',

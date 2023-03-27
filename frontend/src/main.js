@@ -17,6 +17,7 @@ import {
   VaCheckbox,
   VaPagination,
   VaSidebar,
+  VaSelect,
 } from 'vuestic-ui'
 import 'vuestic-ui/styles/essential.css'
 import 'vuestic-ui/styles/reset.css'
@@ -39,6 +40,7 @@ app
         VaCheckbox,
         VaPagination,
         VaSidebar,
+        VaSelect,
       },
     })
   )

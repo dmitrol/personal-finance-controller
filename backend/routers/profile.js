@@ -55,7 +55,19 @@ router.delete(
 )
 
 // category
-router.get('/category', authMiddleware, profileController.getAllCategories)
+router.get(
+  '/category',
+  query('page')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('number not less then 1'),
+  query('per_page')
+    .optional()
+    .isInt({ min: 4 })
+    .withMessage('number not less then 4'),
+  authMiddleware,
+  profileController.getCategories
+)
 router.get('/category/:id', authMiddleware, profileController.getOneCategory)
 router.post(
   '/category',

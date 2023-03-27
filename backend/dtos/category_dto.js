@@ -6,8 +6,8 @@ class CategoryDto {
   constructor(model) {
     this.id = model._id
     this.title = model.title
-    this.income = model.income || true
-    this.expense = model.expense || true
+    this.income = model.income
+    this.expense = model.expense
   }
 
   static resolveCategory(category) {

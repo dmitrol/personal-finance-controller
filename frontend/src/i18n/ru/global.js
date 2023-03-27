@@ -34,4 +34,6 @@ export default {
   button_ok: 'ОК',
   button_cancel: 'Отмена',
   confirm_ask: 'Вы уверенны?',
+  table_head_action: 'Действия',
+  empty_list: 'Список пустой'
 }

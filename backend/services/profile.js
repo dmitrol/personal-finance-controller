@@ -144,9 +144,17 @@ class ProfileService {
     return result ? CategoryDto.resolveCategory(result) : null
   }
 
-  async getAllCategory(userId) {
+  async getCategory(userId, page, perPage) {
     const profile = await ProfileModel.findOne({ user: userId })
-    return CategoryDto.resolveCategoryList(profile.categories)
+    const res = collectionHandler.resolveCollectionByPage(
+      profile.categories || [],
+      page,
+      perPage
+    )
+    return {
+      data: CategoryDto.resolveCategoryList(res?.data),
+      total: res?.size,
+    }
   }
 
   async addCategory(userId, newCategory) {
