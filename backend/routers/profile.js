@@ -93,8 +93,20 @@ router.delete(
   profileController.deleteCategory
 )
 
-router.get('/bill', authMiddleware, profileController.getAllBills)
-router.get('/bill/:id', authMiddleware, profileController.getOneBill)
+router.get(
+  '/bill',
+  query('page')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('number not less then 1'),
+  query('per_page')
+    .optional()
+    .isInt({ min: 4 })
+    .withMessage('number not less then 4'),
+  authMiddleware,
+  profileController.getBills
+),
+  router.get('/bill/:id', authMiddleware, profileController.getOneBill)
 router.post(
   '/bill',
   body('title').notEmpty().withMessage('empty title'),

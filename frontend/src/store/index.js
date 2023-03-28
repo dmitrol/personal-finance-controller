@@ -4,6 +4,7 @@ import profile from './modules/profile'
 import global from './modules/global'
 import currency from './modules/currency'
 import category from './modules/category'
+import bill from './modules/bill'
 
 export default createStore({
   modules: {
@@ -12,5 +13,6 @@ export default createStore({
     global,
     currency,
     category,
+    bill,
   },
 })

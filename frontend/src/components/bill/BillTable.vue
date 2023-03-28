@@ -2,37 +2,33 @@
   <div>
     <div>
       <va-scroll-container color="primary" horizontal>
-        <div class="fc-table" v-if="props.categories.length !== 0">
+        <div class="fc-table" v-if="props.bills.length !== 0">
           <div class="row header">
-            <div class="cell">{{ t('category.table_head.title') }}</div>
-            <div class="cell">{{ t('category.table_head.type') }}</div>
+            <div class="cell">{{ t('bill.table_head.title') }}</div>
+            <div class="cell">{{ t('bill.table_head.currency') }}</div>
             <div class="cell fc-flex-center">
               {{ t('global.table_head_action') }}
             </div>
           </div>
 
-          <div
-            class="row"
-            v-for="category in props.categories"
-            :key="category.id"
-          >
+          <div class="row" v-for="bill in props.bills" :key="bill.id">
             <div class="cell">
-              {{ category.title }}
+              {{ bill.title }}
             </div>
-            <div class="cell">{{ resolveCategoryType(category) }}</div>
+            <div class="cell">{{ bill.currency_code }}</div>
             <div class="cell cell-action">
               <div class="cell-inner">
                 <va-button
                   preset="plain"
                   icon="edit"
                   :title="t('global.edit_button')"
-                  @click="openEditModal(category)"
+                  @click="openEditModal(bill)"
                 />
                 <va-button
                   preset="plain"
                   icon="delete"
                   :title="t('global.delete_button')"
-                  @click="openConfirmModal(category)"
+                  @click="openConfirmModal(bill)"
                 />
               </div>
             </div>
@@ -44,16 +40,16 @@
       </va-scroll-container>
     </div>
 
-    <edit-category-modal
+    <edit-bill-modal
       :show="editModal"
-      :category="selectedCategory"
+      :bill="selectedBill"
       @ok="closeEditModal"
       @cancel="editModal = false"
     />
     <app-confirm-modal
       :show="removeModal"
       :message="t('global.confirm_ask')"
-      @ok="removeCategory"
+      @ok="removeBill"
       @cancel="removeModal = false"
     />
   </div>
@@ -65,45 +61,35 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
 import AppConfirmModal from '@/components/AppConfirmModal.vue'
-import EditCategoryModal from '@/components/category/EditCategoryModal.vue'
+import EditBillModal from '@/components/bill/EditBillModal.vue'
 import notification from '@/service/notification'
 
 const store = useStore()
 const { t } = useI18n({})
 
-const props = defineProps(['categories'])
+const props = defineProps(['bills'])
 const emit = defineEmits(['update'])
 
 const editModal = ref(false)
 const removeModal = ref(false)
-const selectedCategory = ref({})
+const selectedBill = ref({})
 
-function removeCategory() {
+function removeBill() {
   store
-    .dispatch('category/deleteCategory', {
-      category_id: selectedCategory.value.id,
+    .dispatch('bill/deleteBill', {
+      bill_id: selectedBill.value.id,
     })
     .then(() => {
       emit('update')
-      notification.success(t('category.delete_success'))
+      notification.success(t('bill.delete_success'))
     })
     .finally(() => {
       removeModal.value = false
     })
 }
 
-function resolveCategoryType(category) {
-  if (category.income && category.expense) {
-    return t('category.type.universal')
-  } else if (category.income) {
-    return t('category.type.income')
-  } else {
-    return t('category.type.expense')
-  }
-}
-
-function openEditModal(category) {
-  selectedCategory.value = category
+function openEditModal(bill) {
+  selectedBill.value = bill
   editModal.value = true
 }
 
@@ -112,8 +98,8 @@ function closeEditModal() {
   editModal.value = false
 }
 
-function openConfirmModal(category) {
-  selectedCategory.value = category
+function openConfirmModal(bill) {
+  selectedBill.value = bill
   removeModal.value = true
 }
 </script>

@@ -219,9 +219,17 @@ class ProfileService {
     ])
   }
 
-  async getAllBills(userId) {
+  async getBills(userId, page, perPage) {
     const profile = await ProfileModel.findOne({ user: userId })
-    return BillDto.resolveBillList(profile.bills)
+    const res = collectionHandler.resolveCollectionByPage(
+      profile.bills || [],
+      page,
+      perPage
+    )
+    return {
+      data: BillDto.resolveBillList(res?.data),
+      total: res?.size,
+    }
   }
 
   async getOneBill(userId, billId) {

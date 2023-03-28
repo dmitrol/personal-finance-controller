@@ -1,7 +1,7 @@
 <template>
   <div class="app-page">
     <div class="app-page__header fc-flex-right">
-      <div>{{ t('global.menu.currency') }}</div>
+      <div>{{ t('currency.currency_page_title') }}</div>
       <va-button class="fc-ml-3" @click="add">{{
         t('global.create_button')
       }}</va-button>
