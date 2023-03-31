@@ -11,7 +11,15 @@ class RecordDto {
     this.id = model._id
     this.bill = model.bill
     this.category = model.category
-    this.transfer = model.transfer
+    if (model.transfer) {
+      this.transfer = {
+        id: model.transfer._id,
+        rate: model.transfer.rate,
+      }
+    } else {
+      this.transfer = null
+    }
+
     this.sum = model.sum
     this.type = model.type
     this.created_at = model.created_at

@@ -18,11 +18,12 @@ const actions = {
         })
     })
   },
-  addBill(ctx, params) {
+  addBill({ dispatch }, params) {
     return new Promise((resolve, reject) => {
       api
         .post('profile/bill', params)
         .then((data) => {
+          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -30,11 +31,12 @@ const actions = {
         })
     })
   },
-  updateBill(ctx, params) {
+  updateBill({ dispatch }, params) {
     return new Promise((resolve, reject) => {
       api
         .put('profile/bill', params)
         .then((data) => {
+          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -42,11 +44,12 @@ const actions = {
         })
     })
   },
-  deleteBill(ctx, params) {
+  deleteBill({ dispatch }, params) {
     return new Promise((resolve, reject) => {
       api
         .delete('profile/bill', { data: params })
         .then((data) => {
+          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {

@@ -1,17 +1,29 @@
 import { Router } from 'express'
-import { body, param } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import authMiddleware from '../middlewares/auth_middleware.js'
 import recordController from '../controllers/record.js'
 
 const router = new Router()
 
-router.get('/', authMiddleware, recordController.getAllRecords)
 router.get(
-  '/:id',
-  param('id').notEmpty().withMessage('not param'),
+  '/',
+  query('page')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('number not less then 1'),
+  query('per_page')
+    .optional()
+    .isInt({ min: 4 })
+    .withMessage('number not less then 4'),
   authMiddleware,
-  recordController.getRecorById
-)
+  recordController.getRecords
+),
+  router.get(
+    '/:id',
+    param('id').notEmpty().withMessage('not param'),
+    authMiddleware,
+    recordController.getRecorById
+  )
 router.post(
   '/',
   body('bill_id').notEmpty().withMessage('not param'),

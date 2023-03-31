@@ -14,21 +14,25 @@
   text-decoration: uppercase;
   text-align: center;
 }
+.fc-form__buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 .fc-form .auth-submit {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
+
 .fc-form .va-input-wrapper {
-  padding-bottom: 22px;
-}
-.fc-form .va-select {
-  padding-bottom: 18px;
+  padding-bottom: 16px;
 }
 .fc-form .fc-checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  padding-bottom: 22px;
+  padding-bottom: 16px;
 }
 .fc-form .va-input-wrapper.va-input-wrapper--error {
   padding-bottom: 4px;

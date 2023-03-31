@@ -23,4 +23,19 @@ export default {
       value.length === 3 ||
       i18n.global.t('global.currency_code_error', { value: 3 }),
   ],
+  sumValidator: [
+    (value) => {
+      return +value > 0 || i18n.global.t('global.record_sum_error')
+    },
+  ],
+  emptySelectValidator: [
+    (value) => value || i18n.global.t('global.empty_value'),
+  ],
+  compareBillValidator: (billTitle) => {
+    return [
+      (value) => value || i18n.global.t('global.empty_value'),
+      (value) =>
+        value.text !== billTitle || i18n.global.t('global.compare_bill_error'),
+    ]
+  },
 }

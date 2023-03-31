@@ -16,6 +16,8 @@ export default {
   password_max_length: 'Не болие {value} символов',
   empty_value: 'Пустое значение',
   currency_code_error: 'Длина кода {value} символа',
+  record_sum_error: 'Число больше нуля',
+  compare_bill_error: 'Счета совпадают',
   button_submit: 'Отправить',
   login_link: 'Войти',
   logout: 'Выйти',

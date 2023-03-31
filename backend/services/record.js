@@ -4,22 +4,33 @@ import RecordDto from '../dtos/record_dto.js'
 import profileService from '../services/profile.js'
 import ApiError from '../exceptions/api_error.js'
 import transferService from '../services/transfer.js'
+import collectionHandler from '../helpers/collection-handler.js'
 
 class RecordService {
-  async getAllRecords(userId) {
+  async getRecords(userId, page, perPage) {
     const profile = await ProfileModel.findOne({ user: userId })
     const records = await RecordModel.find({ profile: profile.id }).lean()
-    const promises = records.map(async (record) => {
-      const bill = await profileService.getOneBill(userId, record.bill)
-      const category = await profileService.getOneCategory(
-        userId,
-        record.category
-      )
-      record.bill = bill
-      record.category = category
-      return RecordDto.resolveRecord(record)
-    })
-    return await Promise.all(promises)
+    const res = collectionHandler.resolveCollectionByPage(
+      records || [],
+      page,
+      perPage
+    )
+    const promises = Promise.all(
+      res.data.map(async (record) => {
+        const bill = await profileService.getOneBill(userId, record.bill)
+        const category = await profileService.getOneCategory(
+          userId,
+          record.category
+        )
+        record.bill = bill
+        record.category = category
+        return RecordDto.resolveRecord(record)
+      })
+    )
+    return {
+      data: await promises,
+      total: res.size,
+    }
   }
   async getRecordById(userId, recordId) {
     const profile = await ProfileModel.findOne({ user: userId })

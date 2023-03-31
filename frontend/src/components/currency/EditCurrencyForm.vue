@@ -36,7 +36,7 @@
           ></va-checkbox>
         </div>
 
-        <div class="confirm-buttons">
+        <div class="fc-form__buttons">
           <va-button
             class="fc-mr-1"
             color="primary"

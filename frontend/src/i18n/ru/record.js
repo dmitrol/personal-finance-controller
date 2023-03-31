@@ -1,0 +1,27 @@
+export default {
+  record_page_title: 'Записи',
+  create_modal_title: 'Новый запись',
+  edit_modal_title: 'Изменить запись',
+  modal_bill: 'Cчет',
+  modal_type: 'Тип',
+  modal_category: 'Категория',
+  modal_sum: 'Сумма',
+  modal_date: 'Дата',
+  modal_description: 'Описание',
+  table_head: {
+    bill: 'Cчет',
+    category: 'Категория',
+    type: 'Тип',
+    sum: 'Сумма',
+    transfer_rate: 'Курс',
+    date: 'Дата',
+    description: 'Описание',
+  },
+  type: {
+    income: 'Доход',
+    expense: 'Расход',
+  },
+  create_success: 'Запись была успешно добавена',
+  update_success: 'Запись успешно обновлена',
+  delete_success: 'Запись успешно удалена',
+}

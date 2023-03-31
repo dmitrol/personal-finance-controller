@@ -5,6 +5,8 @@ import global from './modules/global'
 import currency from './modules/currency'
 import category from './modules/category'
 import bill from './modules/bill'
+import record from './modules/record'
+import transfer from './modules/transfer'
 
 export default createStore({
   modules: {
@@ -14,5 +16,7 @@ export default createStore({
     currency,
     category,
     bill,
+    record,
+    transfer,
   },
 })

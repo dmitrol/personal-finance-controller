@@ -6,10 +6,10 @@ const state = () => ({})
 const getters = {}
 
 const actions = {
-  getCategory(ctx, params) {
+  getRecords(ctx, params) {
     return new Promise((resolve, reject) => {
       api
-        .get('profile/category', { params: params })
+        .get('record', { params: params })
         .then((data) => {
           resolve(data)
         })
@@ -18,12 +18,11 @@ const actions = {
         })
     })
   },
-  addCategory({ dispatch }, params) {
+  addRecord(ctx, params) {
     return new Promise((resolve, reject) => {
       api
-        .post('profile/category', params)
+        .post('record', params)
         .then((data) => {
-          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -31,12 +30,11 @@ const actions = {
         })
     })
   },
-  updateCategory({ dispatch }, params) {
+  updateRecord(ctx, params) {
     return new Promise((resolve, reject) => {
       api
-        .put('profile/category', params)
+        .put('record', params)
         .then((data) => {
-          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -44,12 +42,11 @@ const actions = {
         })
     })
   },
-  deleteCategory({ dispatch }, params) {
+  deleteRecord(ctx, params) {
     return new Promise((resolve, reject) => {
       api
-        .delete('profile/category', { data: params })
+        .delete('record', { data: params })
         .then((data) => {
-          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {

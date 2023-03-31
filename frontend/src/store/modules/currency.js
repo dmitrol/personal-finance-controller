@@ -18,11 +18,12 @@ const actions = {
         })
     })
   },
-  addCurrency(ctx, params) {
+  addCurrency({ dispatch }, params) {
     return new Promise((resolve, reject) => {
       api
         .post('profile/currency', params)
         .then((data) => {
+          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -30,11 +31,12 @@ const actions = {
         })
     })
   },
-  updateCurrency(ctx, params) {
+  updateCurrency({ dispatch }, params) {
     return new Promise((resolve, reject) => {
       api
         .put('profile/currency', params)
         .then((data) => {
+          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -42,11 +44,12 @@ const actions = {
         })
     })
   },
-  deleteCurrency(ctx, params) {
+  deleteCurrency({ dispatch }, params) {
     return new Promise((resolve, reject) => {
       api
         .delete('profile/currency', { data: params })
         .then((data) => {
+          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {

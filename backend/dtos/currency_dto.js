@@ -8,7 +8,7 @@ class CurrencyDto {
     this.code = model.code
     this.rate = model.rate || 1
     this.main = model.main || false
-    this.rate = +this.rate.toFixed(4)
+    this.rate = +(this?.rate.toFixed(4))
   }
 
   static resolveCurrency(currency) {

@@ -1,0 +1,16 @@
+export default {
+  create_modal_title: 'Новый перевод',
+  edit_modal_title: 'Изменить запись',
+  add_button: 'Перевод',
+  type_transfer: 'Перевод',
+  modal_from_bill: 'Со счета',
+  modal_to_bill: 'На счет',
+  modal_from_sum: 'Со счета cумма',
+  modal_to_sum: 'На счетa сумма',
+  modal_rate: 'Курс',
+  modal_date: 'Дата',
+  modal_description: 'Описание',
+  create_success: 'Перевод был успешно добавен',
+  update_success: 'Перевод успешно обновлен',
+  delete_success: 'Запись успешно удалена',
+}

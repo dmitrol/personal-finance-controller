@@ -43,7 +43,7 @@
           ></va-checkbox>
         </div>
 
-        <div class="fc-flex-center">
+        <div class="fc-form__buttons">
           <va-button
             class="fc-mr-1"
             color="primary"

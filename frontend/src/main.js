@@ -18,6 +18,7 @@ import {
   VaPagination,
   VaSidebar,
   VaSelect,
+  VaDateInput,
 } from 'vuestic-ui'
 import 'vuestic-ui/styles/essential.css'
 import 'vuestic-ui/styles/reset.css'
@@ -41,6 +42,7 @@ app
         VaPagination,
         VaSidebar,
         VaSelect,
+        VaDateInput,
       },
     })
   )

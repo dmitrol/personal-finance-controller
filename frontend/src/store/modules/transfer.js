@@ -6,10 +6,10 @@ const state = () => ({})
 const getters = {}
 
 const actions = {
-  getCategory(ctx, params) {
+  getTransfer(ctx, transfer_id) {
     return new Promise((resolve, reject) => {
       api
-        .get('profile/category', { params: params })
+        .get(`transfer/${transfer_id}`)
         .then((data) => {
           resolve(data)
         })
@@ -18,12 +18,11 @@ const actions = {
         })
     })
   },
-  addCategory({ dispatch }, params) {
+  addTransfer(ctx, params) {
     return new Promise((resolve, reject) => {
       api
-        .post('profile/category', params)
+        .post('transfer', params)
         .then((data) => {
-          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -31,12 +30,11 @@ const actions = {
         })
     })
   },
-  updateCategory({ dispatch }, params) {
+  updateTransfer(ctx, params) {
     return new Promise((resolve, reject) => {
       api
-        .put('profile/category', params)
+        .put('transfer', params)
         .then((data) => {
-          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {
@@ -44,12 +42,11 @@ const actions = {
         })
     })
   },
-  deleteCategory({ dispatch }, params) {
+  deleteTransfer(ctx, params) {
     return new Promise((resolve, reject) => {
       api
-        .delete('profile/category', { data: params })
+        .delete('transfer', { data: params })
         .then((data) => {
-          dispatch('profile/getProfile', null, { root: true })
           resolve(data)
         })
         .catch((error) => {

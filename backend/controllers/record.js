@@ -4,9 +4,17 @@ import profileService from '../services/profile.js'
 import recordSevice from '../services/record.js'
 
 class RecordController {
-  async getAllRecords(req, res, next) {
+  async getRecords(req, res, next) {
     try {
-      return res.status(200).json(await recordSevice.getAllRecords(req.user.id))
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      const page = req.query.page || 1
+      const perPage = req.query.per_page || 10
+      return res
+        .status(200)
+        .json(await recordSevice.getRecords(req.user.id, page, perPage))
     } catch (e) {
       next(e)
     }
