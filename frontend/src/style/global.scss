@@ -85,6 +85,45 @@
     font-weight: 600;
     color: var(--main-header-text);
   }
+  &__filters {
+    margin-top: 12px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .filter-lable {
+      font-size: 20px;
+      line-height: 24px;
+      color: var(--main-header-text);
+    }
+    .filter {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-left: 16px;
+    }
+    .filter .bill-filter {
+      margin-left: 16px;
+    }
+    @media screen and (max-width: 700px) {
+      display: block;
+      .filter {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 8px;
+        justify-items: center;
+      }
+    }
+    @media screen and (max-width: 570px) {
+      .filter {
+        display: block;
+      }
+      .filter .bill-filter {
+        margin-left: 0;
+        margin-top: 8px;
+      }
+    }
+  }
   &__list {
     margin-top: 12px;
     padding: 0 24px;

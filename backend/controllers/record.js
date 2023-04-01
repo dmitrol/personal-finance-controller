@@ -10,11 +10,21 @@ class RecordController {
       if (!validationErrors.isEmpty()) {
         return next(ApiError.validationError(validationErrors.array()))
       }
-      const page = req.query.page || 1
-      const perPage = req.query.per_page || 10
+      const page = req.query?.page || 1
+      const perPage = req.query?.per_page || 10
+      const type = req.query?.type || null
+      const billId = req.query?.bill_id || null
       return res
         .status(200)
-        .json(await recordSevice.getRecords(req.user.id, page, perPage))
+        .json(
+          await recordSevice.getRecords(
+            req.user.id,
+            page,
+            perPage,
+            type,
+            billId
+          )
+        )
     } catch (e) {
       next(e)
     }

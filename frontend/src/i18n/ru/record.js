@@ -24,4 +24,9 @@ export default {
   create_success: 'Запись была успешно добавена',
   update_success: 'Запись успешно обновлена',
   delete_success: 'Запись успешно удалена',
+  filters_total_lable: 'Сортировать',
+  type_filter_lable: 'Тип',
+  type_filter_all: 'Всё',
+  bill_filter_lable: 'Счет',
+  bill_filter_all: 'Все счета',
 }

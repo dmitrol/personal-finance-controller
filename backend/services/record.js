@@ -7,11 +7,31 @@ import transferService from '../services/transfer.js'
 import collectionHandler from '../helpers/collection-handler.js'
 
 class RecordService {
-  async getRecords(userId, page, perPage) {
+  async getRecords(userId, page, perPage, type, billId) {
     const profile = await ProfileModel.findOne({ user: userId })
     const records = await RecordModel.find({ profile: profile.id }).lean()
+    const sortedTypeList = []
+    records.forEach((record) => {
+      if (!!type) {
+        if (record.type === type) {
+          sortedTypeList.push(record)
+        }
+      } else {
+        sortedTypeList.push(record)
+      }
+    })
+    const sortedList = []
+    sortedTypeList.forEach((recod) => {
+      if (!!billId) {
+        if (recod.bill._id.equals(billId)) {
+          sortedList.push(recod)
+        }
+      } else {
+        sortedList.push(recod)
+      }
+    })
     const res = collectionHandler.resolveCollectionByPage(
-      records || [],
+      sortedList || [],
       page,
       perPage
     )
