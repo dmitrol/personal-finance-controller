@@ -7,6 +7,7 @@ import category from './modules/category'
 import bill from './modules/bill'
 import record from './modules/record'
 import transfer from './modules/transfer'
+import statistic from './modules/statistic'
 
 export default createStore({
   modules: {
@@ -18,5 +19,6 @@ export default createStore({
     bill,
     record,
     transfer,
+    statistic,
   },
 })

@@ -8,6 +8,7 @@ import authRouter from './routers/auth.js'
 import profileRouter from './routers/profile.js'
 import recodRouter from './routers/record.js'
 import transferRouter from './routers/transfer.js'
+import statisticRouter from './routers/statistic.js'
 import errorMiddleware from './middlewares/error_middleware.js'
 
 dotenv.config()
@@ -20,19 +21,27 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-app.use(cors({
-  'allowedHeaders': ['sessionId', 'Content-Type', 'Authorization', 'authorization'],
-  'exposedHeaders': ['sessionId'],
-  'origin': ['http://localhost:8080', 'http://localhost:8080/login'],
-  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  'credentials': true,
-  'preflightContinue': false
-}));
+app.use(
+  cors({
+    allowedHeaders: [
+      'sessionId',
+      'Content-Type',
+      'Authorization',
+      'authorization',
+    ],
+    exposedHeaders: ['sessionId'],
+    origin: ['http://localhost:8080', 'http://localhost:8080/login'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    preflightContinue: false,
+  })
+)
 
 app.use('/api', authRouter)
 app.use('/api/profile', profileRouter)
 app.use('/api/record', recodRouter)
 app.use('/api/transfer', transferRouter)
+app.use('/api/statistic', statisticRouter)
 
 app.use(errorMiddleware)
 
