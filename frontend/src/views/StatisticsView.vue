@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import StatisticTable from '@/components/statistic/StatisticTable.vue'
@@ -28,9 +28,13 @@ import StatisticTable from '@/components/statistic/StatisticTable.vue'
 const store = useStore()
 const { t } = useI18n({})
 
+const storePerPages = computed(() => {
+  return store.state.profile.perPage
+})
+
 const statisticData = ref([])
 const page = ref(1)
-const perPage = ref(4)
+const perPage = ref(storePerPages.value || 5)
 const totalPage = ref(1)
 
 onMounted(() => {
@@ -52,6 +56,10 @@ function loadData() {
 }
 
 watch(page, () => {
+  loadData()
+})
+watch(storePerPages, () => {
+  perPage.value = storePerPages.value
   loadData()
 })
 </script>

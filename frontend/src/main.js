@@ -19,6 +19,8 @@ import {
   VaSidebar,
   VaSelect,
   VaDateInput,
+  VaButtonDropdown,
+  VaIcon,
 } from 'vuestic-ui'
 import 'vuestic-ui/styles/essential.css'
 import 'vuestic-ui/styles/reset.css'
@@ -43,6 +45,8 @@ app
         VaSidebar,
         VaSelect,
         VaDateInput,
+        VaButtonDropdown,
+        VaIcon,
       },
     })
   )

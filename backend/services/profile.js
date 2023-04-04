@@ -13,10 +13,18 @@ class ProfileService {
       user: userId,
       currencies: [],
       categories: [],
+      per_page: 10,
     })
   }
   async getProfile(userId) {
     const profile = await ProfileModel.findOne({ user: userId }).lean()
+    return ProfileDto.resolveProfile(profile)
+  }
+
+  async updatePerPage(userId, perPage) {
+    const profile = await ProfileModel.findOne({ user: userId })
+    profile.per_page = perPage
+    await profile.save()
     return ProfileDto.resolveProfile(profile)
   }
 

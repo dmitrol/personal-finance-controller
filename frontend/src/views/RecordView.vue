@@ -78,9 +78,13 @@ const bills = computed(() => {
   return store.state.profile.bills
 })
 
+const storePerPages = computed(() => {
+  return store.state.profile.perPage
+})
+
 const recordList = ref([])
 const page = ref(1)
-const perPage = ref(4)
+const perPage = ref(storePerPages.value || 5)
 const totalPage = ref(1)
 const typeOptions = ref([])
 const billOptions = ref([])
@@ -92,6 +96,7 @@ const showTransferModal = ref(false)
 onMounted(() => {
   loadData()
   initOptions()
+  perPage.value = storePerPages.value
 })
 
 function loadData() {
@@ -163,6 +168,10 @@ watch(selectedType, () => {
   loadData()
 })
 watch(selectedBill, () => {
+  loadData()
+})
+watch(storePerPages, () => {
+  perPage.value = storePerPages.value
   loadData()
 })
 </script>

@@ -61,7 +61,7 @@ function handleForm() {
         password: password.value,
       })
       .then(() => {
-        init({ message: t('registration_success'), color: 'success' })
+        init({ message: t('global.registration_success'), color: 'success' })
         router.push({ name: 'login' })
       })
   }

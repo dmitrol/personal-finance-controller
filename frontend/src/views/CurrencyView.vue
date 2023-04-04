@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
@@ -39,6 +39,10 @@ import CurrencyTable from '@/components/currency/CurrencyTable.vue'
 
 const store = useStore()
 const { t } = useI18n({})
+
+const storePerPages = computed(() => {
+  return store.state.profile.perPage
+})
 
 const currencyList = ref([])
 const page = ref(1)
@@ -82,6 +86,10 @@ function closeModal() {
 }
 
 watch(page, () => {
+  loadData()
+})
+watch(storePerPages, () => {
+  perPage.value = storePerPages.value
   loadData()
 })
 </script>

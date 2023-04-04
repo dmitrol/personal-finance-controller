@@ -7,12 +7,13 @@ const state = () => ({
   categories: [],
   currencies: [],
   mainCurrency: null,
+  perPage: 10,
 })
 
 const getters = {}
 
 const actions = {
-  getProfile({ rootState, dispatch }) {
+  getProfile({ dispatch }) {
     return new Promise((resolve, reject) => {
       api
         .get('profile')
@@ -34,6 +35,7 @@ const actions = {
       commit('setBills', profile?.bills || [])
       commit('setCategory', profile?.categories || [])
       commit('setCurrencies', profile?.currencies || [])
+      commit('setPerPage', profile?.per_page || 10)
       if (profile.currencies.length > 0) {
         const mainCurrency = profile.currencies.find(
           (currency) => currency.main === true
@@ -41,6 +43,20 @@ const actions = {
         commit('setMainCurrency', mainCurrency)
       }
     }
+  },
+
+  updatePerPage({ dispatch }, perPage) {
+    return new Promise((resolve, reject) => {
+      api
+        .post('profile/update-per-page', { per_page: perPage })
+        .then((data) => {
+          dispatch('updateProfile', data?.data || null)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   },
 }
 
@@ -59,6 +75,9 @@ const mutations = {
   },
   setMainCurrency(state, currency) {
     state.mainCurrency = currency
+  },
+  setPerPage(state, perPage) {
+    state.perPage = perPage
   },
 }
 

@@ -5,6 +5,14 @@ import profileController from '../controllers/profile.js'
 const router = new Router()
 
 router.get('/', authMiddleware, profileController.getProfile)
+router.post(
+  '/update-per-page',
+  body('per_page')
+    .isInt({ min: 4, max: 100 })
+    .withMessage('must be number from 4 to 100'),
+  authMiddleware,
+  profileController.updatePerPage
+)
 
 // currency
 router.get(

@@ -37,5 +37,9 @@ export default {
   button_cancel: 'Отмена',
   confirm_ask: 'Вы уверенны?',
   table_head_action: 'Действия',
-  empty_list: 'Список пустой'
+  empty_list: 'Список пустой',
+  profile_setting: 'Настройка',
+  profile_setting_modal_title: 'Настройка профиля',
+  profile_setting_per_page: 'К-в элементов на странице',
+  profile_updated: 'Профиль обновлен',
 }

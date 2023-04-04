@@ -5,12 +5,14 @@ import CurrencyDto from '../dtos/currency_dto.js'
 class ProfileDto {
   id
   user_id
+  per_page
   currencies
   categories
   bills
   constructor(model) {
     this.id = model._id
     this.user_id = model.user
+    this.per_page = model.per_page
     this.currencies = model.currencies
     this.categories = model.categories
     this.bills = model.bills

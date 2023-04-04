@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
@@ -39,9 +39,13 @@ import BillTable from '@/components/bill/BillTable.vue'
 const store = useStore()
 const { t } = useI18n({})
 
+const storePerPages = computed(() => {
+  return store.state.profile.perPage
+})
+
 const billList = ref([])
 const page = ref(1)
-const perPage = ref(4)
+const perPage = ref(storePerPages.value || 5)
 const totalPage = ref(1)
 const showModal = ref(false)
 
@@ -81,6 +85,10 @@ function closeModal() {
 }
 
 watch(page, () => {
+  loadData()
+})
+watch(storePerPages, () => {
+  perPage.value = storePerPages.value
   loadData()
 })
 </script>

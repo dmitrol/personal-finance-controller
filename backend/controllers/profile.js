@@ -12,6 +12,22 @@ class ProfileController {
       next(e)
     }
   }
+
+  async updatePerPage(req, res, next) {
+    try {
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      const perPage = req.body.per_page
+      return res
+        .status(200)
+        .json(await profileService.updatePerPage(req.user.id, perPage))
+    } catch (e) {
+      next(e)
+    }
+  }
+
   async getOneCurrency(req, res, next) {
     try {
       const validationErrors = validationResult(req)

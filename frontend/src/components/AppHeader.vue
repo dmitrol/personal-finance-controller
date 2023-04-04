@@ -1,27 +1,49 @@
 <template>
-  <div class="header-content">
-    <div class="fc-flex-right">
-      <div class="sidebar-button" @click="showMenu = !showMenu">
-        <div></div>
-        <div></div>
-        <div></div>
+  <div>
+    <div class="header-content">
+      <div class="fc-flex-right">
+        <div class="sidebar-button" @click="showMenu = !showMenu">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="logo">
+          <router-link :to="{ name: 'main' }">Finance-Controller </router-link>
+        </div>
+        <div class="header-time">{{ appTime }}</div>
       </div>
-      <div class="logo">
-        <router-link :to="{ name: 'main' }">Finance-Controller </router-link>
+      <div class="fc-flex-left">
+        <va-button-dropdown
+          class="profile-dropdown"
+          label="label"
+          placement="bottom-end"
+          hide-icon
+        >
+          <template #label>
+            <va-icon name="account_circle" />
+          </template>
+          <div class="profile-dropdown__item" @click="showSettingModal = true">
+            {{ t('global.profile_setting') }}
+          </div>
+          <div class="profile-dropdown__item logout" @click="logout">
+            {{ t('global.logout') }}
+          </div>
+        </va-button-dropdown>
       </div>
-      <div class="header-time">{{ appTime }}</div>
+      <va-sidebar
+        class="modile-aside"
+        v-model="showMenu"
+        position="left"
+        style="position: absolute"
+      >
+        <app-navigation-menu />
+      </va-sidebar>
     </div>
-    <div class="fc-flex-left">
-      <div class="logout" @click="logout">{{ t('global.logout') }}</div>
-    </div>
-    <va-sidebar
-      class="modile-aside"
-      v-model="showMenu"
-      position="left"
-      style="position: absolute"
-    >
-      <app-navigation-menu />
-    </va-sidebar>
+    <profile-setting-modal
+      :show="showSettingModal"
+      @ok="showSettingModal = false"
+      @cancel="showSettingModal = false"
+    />
   </div>
 </template>
 
@@ -32,12 +54,14 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import applicationTime from '@/service/application-time.js'
 import AppNavigationMenu from '@/components/AppNavigationMenu.vue'
+import ProfileSettingModal from '@/components/ProfileSettingModal.vue'
 
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 const showMenu = ref(false)
+const showSettingModal = ref(false)
 
 let appTimeInterval = ref(null)
 let appTime = ref(applicationTime.getCurrentTime())
@@ -72,7 +96,7 @@ watch(route, () => {
   justify-content: space-between;
   background: var(--header-background);
   color: var(--text-invert);
-  padding: 16px 24px;
+  padding: 9px 24px;
   .sidebar-button {
     display: none;
     width: 20px;
@@ -108,9 +132,21 @@ watch(route, () => {
       display: none;
     }
   }
-  .logout {
-    text-decoration: underline;
-    cursor: pointer;
+  .profile-dropdown {
+    .va-dropdown__content-wrapper {
+      left: 0;
+    }
+    &__item {
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+    &__item:hover {
+      background: var(--aside-menu-item-hover);
+    }
+    .logout {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }
 .modile-aside {
