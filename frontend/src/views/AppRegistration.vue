@@ -20,6 +20,13 @@
         :label="t('global.password')"
         :rules="validators.passwordValidator"
       />
+      <va-select
+        v-model="currencySelect"
+        max-height="105px"
+        :label="t('global.registration_currency')"
+        :options="currencyOptions"
+        :rules="validators.emptySelectValidator"
+      />
       <div class="auth-submit">
         <va-button type="submit" @click.prevent="handleForm">
           {{ $t('global.button_submit') }}
@@ -49,6 +56,12 @@ const { t } = useI18n({})
 
 const email = ref('')
 const password = ref('')
+const currencySelect = ref({ text: t('global.dollar'), value: 'USD' })
+
+const currencyOptions = ref([
+  { text: t('global.dollar'), value: 'USD' },
+  { text: t('global.euro'), value: 'EUR' },
+])
 const validation = ref(null)
 const form = ref(null)
 
@@ -59,6 +72,8 @@ function handleForm() {
       .dispatch('auth/registration', {
         email: email.value,
         password: password.value,
+        currecy_title: currencySelect.value.text,
+        currecy_code: currencySelect.value.value,
       })
       .then(() => {
         init({ message: t('global.registration_success'), color: 'success' })

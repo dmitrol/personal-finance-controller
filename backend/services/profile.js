@@ -8,10 +8,17 @@ import BillDto from '../dtos/bill_dto.js'
 import collectionHandler from '../helpers/collection-handler.js'
 
 class ProfileService {
-  async createProfile(userId) {
+  async createProfile(userId, currecyTitle, currecyCode) {
     return await ProfileModel.create({
       user: userId,
-      currencies: [],
+      currencies: [
+        {
+          title: currecyTitle,
+          code: currecyCode,
+          rate: 1,
+          main: true,
+        },
+      ],
       categories: [],
       per_page: 10,
     })

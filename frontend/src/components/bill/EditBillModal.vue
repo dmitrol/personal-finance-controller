@@ -28,7 +28,7 @@
           max-height="105px"
           :label="t('bill.modal_currency')"
           :options="selectOptions"
-          :rules="validators.emptyValueValidator"
+          :rules="validators.emptySelectValidator"
         />
 
         <div class="fc-form__buttons">
@@ -107,7 +107,7 @@ function handleForm() {
     const newBill = {
       bill_id: props.bill.id,
       title: title.value,
-      currency_code: selectValue.value,
+      currency_code: selectValue.value.value,
     }
     store
       .dispatch('bill/updateBill', newBill)
@@ -122,12 +122,16 @@ function handleForm() {
 }
 function initData() {
   title.value = props.bill.title
-  selectValue.value = props.bill.currency_code
+  selectValue.value = {
+    text: props.bill.currency_code,
+    value: props.bill.currency_code,
+  }
 }
 function initOptions() {
+  selectOptions.value = []
   const list = toRaw(currencies.value)
   list.forEach((item) => {
-    return selectOptions.value.push(item.code)
+    return selectOptions.value.push({ text: item.title, value: item.code })
   })
 }
 watch(currencies, () => {

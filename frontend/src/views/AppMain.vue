@@ -49,15 +49,21 @@ const loader = computed(() => {
 .application-main {
   position: relative;
   display: flex;
+  justify-content: start;
   .desktop-aside {
+    max-width: 220px;
     @media screen and (max-width: 720px) {
       display: none;
     }
   }
   .general-content {
     width: 100%;
+    max-width: calc(100% - 220px);
     min-height: var(--main-content-height);
     position: relative;
+    @media screen and (max-width: 720px) {
+      max-width: none;
+    }
   }
 }
 </style>

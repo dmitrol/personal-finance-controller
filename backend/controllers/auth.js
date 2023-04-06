@@ -16,9 +16,15 @@ class UserController {
         )
       }
       const { email, password } = req.body
+      const currecyTitle = req.body.currecy_title || 'Dollar'
+      const currecyCode = req.body.currecy_code || 'USD'
       const result = await userService.registration(email, password)
       setRefreshToken(res, result.refreshToken)
-      const profile = await profileService.createProfile(result.user.id)
+      const profile = await profileService.createProfile(
+        result.user.id,
+        currecyTitle,
+        currecyCode
+      )
       return res.status(200).json({ user: result, profile: profile })
     } catch (e) {
       next(e)

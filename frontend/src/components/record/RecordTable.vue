@@ -2,13 +2,15 @@
   <div>
     <div>
       <va-scroll-container color="primary" horizontal>
-        <div class="fc-table" v-if="props.records.length !== 0">
+        <div class="fc-table record-table" v-if="props.records.length !== 0">
           <div class="row header">
             <div class="cell">{{ t('record.table_head.bill') }}</div>
             <div class="cell">{{ t('record.table_head.category') }}</div>
             <div class="cell">{{ t('record.table_head.type') }}</div>
             <div class="cell">{{ t('record.table_head.sum') }}</div>
-            <div class="cell">{{ t('record.table_head.transfer_rate') }}</div>
+            <div class="cell">
+              {{ t('record.table_head.transfer_rate') }}
+            </div>
             <div class="cell">{{ t('record.table_head.date') }}</div>
             <div class="cell">{{ t('record.table_head.description') }}</div>
             <div class="cell fc-flex-center">

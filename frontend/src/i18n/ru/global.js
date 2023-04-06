@@ -42,4 +42,7 @@ export default {
   profile_setting_modal_title: 'Настройка профиля',
   profile_setting_per_page: 'К-в элементов на странице',
   profile_updated: 'Профиль обновлен',
+  dollar: 'Доллар США',
+  euro: 'Евро',
+  registration_currency: 'Основная валюта',
 }

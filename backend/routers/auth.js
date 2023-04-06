@@ -11,6 +11,14 @@ router.post(
   '/registration',
   body('email').isEmail(),
   body('password').isLength({ min: 4, max: 32 }),
+  body('currecy_title')
+    .optional()
+    .isLength({ min: 1, max: 30 })
+    .withMessage('max 30 characters'),
+  body('currecy_code')
+    .optional()
+    .isLength({ min: 3, max: 3 })
+    .withMessage('must be 3 characters'),
   authController.registration
 )
 router.post('/login', authController.login)

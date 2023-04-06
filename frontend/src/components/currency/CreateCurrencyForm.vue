@@ -33,7 +33,7 @@
         <va-input
           v-model="rate"
           type="text"
-          :label="t('currency.modal_rate', { main: mainCurrency.code })"
+          :label="t('currency.modal_rate', { main: mainCurrency?.code })"
           ref="input"
         />
         <div class="fc-checkbox-group">

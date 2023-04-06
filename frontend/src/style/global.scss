@@ -88,12 +88,14 @@
   &__filters {
     margin-top: 12px;
     padding: 0 24px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     .filter-lable {
       font-size: 20px;
       line-height: 24px;
+      font-weight: 600;
       color: var(--main-header-text);
     }
     .filter {
