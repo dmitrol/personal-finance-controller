@@ -28,6 +28,21 @@ class ProfileController {
     }
   }
 
+  async updateLocale(req, res, next) {
+    try {
+      const validationErrors = validationResult(req)
+      if (!validationErrors.isEmpty()) {
+        return next(ApiError.validationError(validationErrors.array()))
+      }
+      const locale = req.body.locale
+      return res
+        .status(200)
+        .json(await profileService.updateLocale(req.user.id, locale))
+    } catch (e) {
+      next(e)
+    }
+  }
+
   async getOneCurrency(req, res, next) {
     try {
       const validationErrors = validationResult(req)

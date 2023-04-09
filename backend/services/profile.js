@@ -21,6 +21,7 @@ class ProfileService {
       ],
       categories: [],
       per_page: 10,
+      locale: 'en',
     })
   }
   async getProfile(userId) {
@@ -31,6 +32,13 @@ class ProfileService {
   async updatePerPage(userId, perPage) {
     const profile = await ProfileModel.findOne({ user: userId })
     profile.per_page = perPage
+    await profile.save()
+    return ProfileDto.resolveProfile(profile)
+  }
+
+  async updateLocale(userId, locale) {
+    const profile = await ProfileModel.findOne({ user: userId })
+    profile.locale = locale
     await profile.save()
     return ProfileDto.resolveProfile(profile)
   }

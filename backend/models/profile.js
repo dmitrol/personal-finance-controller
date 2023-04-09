@@ -7,6 +7,7 @@ import BillSchema from '../schemas/BillSchema.js'
 const ProfileSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'users', required: true },
   per_page: { type: Number, default: 10 },
+  locale: { type: String, default: 'en' },
   currencies: [CurrencySchema],
   categories: [CategorySchema],
   bills: [BillSchema],

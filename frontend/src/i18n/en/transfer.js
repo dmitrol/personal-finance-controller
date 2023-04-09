@@ -1,0 +1,16 @@
+export default {
+  create_modal_title: 'New transfer',
+  edit_modal_title: 'Edit transfer',
+  add_button: 'Transfer',
+  type_transfer: 'Transfer',
+  modal_from_bill: 'From bill',
+  modal_to_bill: 'To bill',
+  modal_from_sum: 'From bill sum',
+  modal_to_sum: 'To bill sum',
+  modal_rate: 'Rate',
+  modal_date: 'Date',
+  modal_description: 'Description',
+  create_success: 'Transfer has been successfully added',
+  update_success: 'Transfer has been successfully updated',
+  delete_success: 'Transfer has been successfully deleted',
+}

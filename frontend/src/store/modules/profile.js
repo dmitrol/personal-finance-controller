@@ -42,6 +42,7 @@ const actions = {
         )
         commit('setMainCurrency', mainCurrency)
       }
+      localStorage.setItem('locale', profile.locale || 'en')
     }
   },
 
@@ -49,6 +50,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       api
         .post('profile/update-per-page', { per_page: perPage })
+        .then((data) => {
+          dispatch('updateProfile', data?.data || null)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  updateLocale({ dispatch }, locale) {
+    return new Promise((resolve, reject) => {
+      api
+        .post('profile/locale', { locale })
         .then((data) => {
           dispatch('updateProfile', data?.data || null)
           resolve(data)

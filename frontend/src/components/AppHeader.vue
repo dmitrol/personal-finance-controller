@@ -14,6 +14,21 @@
       </div>
       <div class="fc-flex-left">
         <va-button-dropdown
+          class="language-dropdown"
+          :label="localeSelect.toUpperCase()"
+          placement="bottom-end"
+          hide-icon
+        >
+          <div
+            class="language-dropdown__item"
+            v-for="item in languages"
+            :key="item"
+            @click="switchLocale(item.toLowerCase())"
+          >
+            {{ item }}
+          </div>
+        </va-button-dropdown>
+        <va-button-dropdown
           class="profile-dropdown"
           label="label"
           placement="bottom-end"
@@ -59,14 +74,19 @@ import ProfileSettingModal from '@/components/ProfileSettingModal.vue'
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-const { t } = useI18n()
+const { locale } = useI18n({ useScope: 'global' })
+
 const showMenu = ref(false)
 const showSettingModal = ref(false)
+const localeSelect = ref(localStorage.getItem('locale') || 'en')
+const languages = ['EN', 'RU']
 
 let appTimeInterval = ref(null)
 let appTime = ref(applicationTime.getCurrentTime())
 
 onMounted(() => {
+  localeSelect.value = localStorage.getItem('locale') || 'en'
+  locale.value = localeSelect.value
   appTimeInterval.value = setInterval(() => {
     appTime.value = applicationTime.getCurrentTime()
   }, 10000)
@@ -83,8 +103,22 @@ async function logout() {
   await store.dispatch('auth/logout')
 }
 
+function switchLocale(value) {
+  if (value !== localeSelect.value) {
+    store.dispatch('profile/updateLocale', value).then((data) => {
+      const result = data?.data?.locale
+      if (result) {
+        localeSelect.value = result
+      }
+    })
+  }
+}
+
 watch(route, () => {
   showMenu.value = false
+})
+watch(localeSelect, () => {
+  locale.value = localeSelect.value
 })
 </script>
 
@@ -146,6 +180,16 @@ watch(route, () => {
     .logout {
       text-decoration: underline;
       cursor: pointer;
+    }
+  }
+  .language-dropdown {
+    text-transform: uppercase;
+    &__item {
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+    &__item:hover {
+      background: var(--aside-menu-item-hover);
     }
   }
 }

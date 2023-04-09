@@ -13,6 +13,12 @@ router.post(
   authMiddleware,
   profileController.updatePerPage
 )
+router.post(
+  '/locale',
+  body('locale').notEmpty().withMessage('empty title'),
+  authMiddleware,
+  profileController.updateLocale
+)
 
 // currency
 router.get(
