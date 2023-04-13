@@ -1,5 +1,4 @@
 import global from './global'
-import date from './date'
 import currency from './currency'
 import category from './category'
 import bill from './bill'
@@ -9,7 +8,6 @@ import statistic from './statistic'
 
 export default {
   global,
-  date,
   currency,
   category,
   bill,

@@ -67,7 +67,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import applicationTime from '@/service/application-time.js'
+import moment from 'moment'
 import AppNavigationMenu from '@/components/AppNavigationMenu.vue'
 import ProfileSettingModal from '@/components/ProfileSettingModal.vue'
 
@@ -82,14 +82,14 @@ const localeSelect = ref(localStorage.getItem('locale') || 'en')
 const languages = ['EN', 'RU']
 
 let appTimeInterval = ref(null)
-let appTime = ref(applicationTime.getCurrentTime())
+let appTime = ref(resolveTime())
 
 onMounted(() => {
   localeSelect.value = localStorage.getItem('locale') || 'en'
   locale.value = localeSelect.value
   appTimeInterval.value = setInterval(() => {
-    appTime.value = applicationTime.getCurrentTime()
-  }, 10000)
+    appTime.value = resolveTime()
+  }, 1000)
 })
 
 onBeforeUnmount(() => {
@@ -112,6 +112,10 @@ function switchLocale(value) {
       }
     })
   }
+}
+
+function resolveTime() {
+  return moment().locale(localeSelect.value).format('dddd, DD MMMM YYYY h:mm:ss')
 }
 
 watch(route, () => {
