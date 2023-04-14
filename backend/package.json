@@ -8,8 +8,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "server": "nodemon app.js",
+    "start": "node index.js",
+    "server": "nodemon index.js",
     "client-build": "npm run build --prefix ../frontend",
     "client": "npm run serve --prefix ../frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
