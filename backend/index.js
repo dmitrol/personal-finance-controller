@@ -30,7 +30,10 @@ app.use(
       'authorization',
     ],
     exposedHeaders: ['sessionId'],
-    origin: ['http://localhost:8080', 'http://localhost:8080/login'],
+    origin: [
+      'http://localhost:8080',
+      'https://personal-finance-controller.vercel.app',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     preflightContinue: false,
