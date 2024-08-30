@@ -74,6 +74,7 @@ import ProfileSettingModal from '@/components/ProfileSettingModal.vue'
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
+const { t } = useI18n()
 const { locale } = useI18n({ useScope: 'global' })
 
 const showMenu = ref(false)

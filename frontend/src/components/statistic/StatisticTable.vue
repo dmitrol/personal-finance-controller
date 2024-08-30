@@ -60,7 +60,7 @@ const currencies = computed(() => {
 function inMainCurrency(sum, currency) {
   const list = toRaw(currencies.value)
   const result = list.find((item) => item.code === currency)
-  return (sum * result.rate).toFixed(2)
+  return (sum / result.rate).toFixed(2)
 }
 </script>
 

@@ -14,7 +14,7 @@
         @validation="validation = $event"
       >
         <div class="fc-form__title">
-          {{ $t('global.profile_setting_modal_title') }}
+          {{ t('global.profile_setting_modal_title') }}
         </div>
         <va-select
           v-model="perPageSelect"
@@ -43,14 +43,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, defineEmits, defineProps } from 'vue'
+import { ref, defineEmits, defineProps, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import notification from '@/service/notification'
 import validators from '@/service/validators'
 
 const store = useStore()
-const { t } = useI18n({})
+const { t } = useI18n()
 const emit = defineEmits(['ok'])
 const props = defineProps({
   show: {
